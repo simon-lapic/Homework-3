@@ -99,18 +99,29 @@ class TimeCode {
         string ToString() const;
 
         // OPERATOR DEFINITIONS
+        
+        // Addition operator
         TimeCode operator+(const TimeCode& other) const;
+        // Subtraction operator
         TimeCode operator-(const TimeCode& other) const;
+        // Multiplication operator
         TimeCode operator*(double a) const;
+        // Division operator
         TimeCode operator/(double a) const;
 
+        // Equals operator
         bool operator == (const TimeCode& other) const;
+        // Not Equals operator
         bool operator != (const TimeCode& other) const;
 
+        // Less Than operator
         bool operator < (const TimeCode& other) const;
+        // Less Than or Equal to operator
         bool operator <= (const TimeCode& other) const;
 
+        // Greater Than operator
         bool operator > (const TimeCode& other) const;
+        // Greater Than or Equal operator
         bool operator >= (const TimeCode& other) const;
     
     private:
