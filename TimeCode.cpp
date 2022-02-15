@@ -1,8 +1,9 @@
 #include "TimeCode.h"
+#include <iostream>
 
 using namespace std;
 
-TimeCode::TimeCode(unsigned int hr = 0, unsigned int min = 0, long long unsigned int sec = 0) {
+TimeCode::TimeCode(unsigned int hr, unsigned int min, long long unsigned int sec) {
     t = ComponentsToSeconds(hr, min, sec);
 }
 
@@ -53,8 +54,8 @@ unsigned int TimeCode::GetSeconds() const {
 void TimeCode::GetComponents(unsigned int& hr, unsigned int& min, unsigned int& sec) const {
     int currT = t;
     
-    hr = currT/1200;
-    currT%=1200;
+    hr = currT/3600;
+    currT%=3600;
 
     min = currT/60;
     currT%=60;
@@ -63,7 +64,7 @@ void TimeCode::GetComponents(unsigned int& hr, unsigned int& min, unsigned int& 
 }
 
 long long unsigned int TimeCode::ComponentsToSeconds(unsigned int hr, unsigned int min, unsigned long long int sec) {
-    return hr*1200 + min*60 + sec;
+    return hr*3600 + min*60 + sec;
 }
 
 string TimeCode::ToString() const {

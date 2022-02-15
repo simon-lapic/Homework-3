@@ -4,7 +4,7 @@
 using namespace std;
 
 #include "TimeCode.h"
-// #include "TimeCode.cpp"
+#include "TimeCode.cpp"
 
 
 void TestComponentsToSeconds(){
