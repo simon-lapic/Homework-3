@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <assert.h>
 using namespace std;
@@ -7,21 +6,23 @@ using namespace std;
 #include "TimeCode.cpp"
 
 
-void TestComponentsToSeconds(){
-	cout << "Testing ComponentsToSeconds" << endl;
+void TestComponentsToSeconds() {
+	cout << endl << "=====COMPONENTS TO SECONDS TESTS=====" << endl;
 	
 	// Random but "safe" inputs
-	long long unsigned int t = TimeCode::ComponentsToSeconds(3, 17, 42);
-	assert(t == 11862);
+	long long unsigned int t1 = TimeCode::ComponentsToSeconds(3, 17, 42);
+	cout << "Components 3:17:42 -> " << t1 << " -> ";
+	assert(t1 == 11862);
+	cout << " PASSED" << endl;
 	
-	// More tests go here!
+	// Negative input
 	
-	cout << "PASSED!" << endl << endl;
+	
 }
 
 
-void TestDefaultConstructor(){
-	cout << "Testing Default Constructor" << endl;
+void TestDefaultConstructor() {
+	cout << endl << "=====DEFAULT CONSTRUCTOR TESTS=====" << endl;
 	TimeCode tc;
 	
 	//cout << "Testing ToString()" << endl;
@@ -32,7 +33,7 @@ void TestDefaultConstructor(){
 }
 
 
-void TestComponentConstructor(){
+void TestComponentConstructor() {
 	cout << "Testing Component Constructor" << endl;
 	TimeCode tc = TimeCode(0, 0, 0);
 	//cout << "Testing ToString()" << endl;
@@ -52,7 +53,7 @@ void TestComponentConstructor(){
 }
 
 
-void TestGetComponents(){
+void TestGetComponents() {
 	cout << "Testing GetComponents" << endl;
 	
 	unsigned int h;
@@ -70,7 +71,7 @@ void TestGetComponents(){
 }
 
 
-void TestSubtract(){
+void TestSubtract() {
 	cout << "Testing Subtract" << endl;
 	TimeCode tc1 = TimeCode(1, 0, 0);
 	TimeCode tc2 = TimeCode(0, 50, 0);
@@ -95,8 +96,7 @@ void TestSubtract(){
 }
 
 
-void TestSetMinutes()
-{
+void TestSetMinutes() {
 	cout << "Testing SetMinutes" << endl;
 
 	TimeCode tc = TimeCode(8, 5, 9);
@@ -122,12 +122,14 @@ void TestSetMinutes()
 // Many More Tests...
 
 	
-int main(){
+int main() {
 	
 	TestComponentsToSeconds();
 	TestDefaultConstructor();
 	TestComponentConstructor();
 	TestGetComponents();
+	TestSubtract();
+	TestSetMinutes();
 	
 	// Many othere test functions...
 	

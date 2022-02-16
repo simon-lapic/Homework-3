@@ -39,6 +39,7 @@ class TimeCode {
          * @brief Set the number of minutes in the TimeCode
          * 
          * @param minutes unsigned int, the number of minutes
+         * @throws invalid_argument if minutes > 60
          */
         void SetMinutes(unsigned int minutes);
 
@@ -46,6 +47,7 @@ class TimeCode {
          * @brief Set the number of seconds in the TimeCode
          * 
          * @param seconds unsigned int, the number of seconds
+         * @throws invalid_argument if seconds > 60
          */
         void SetSeconds(unsigned int seconds); 
 
@@ -100,28 +102,93 @@ class TimeCode {
 
         // OPERATOR DEFINITIONS
         
-        // Addition operator
+        /**
+         * @brief Adds two TimeCodes together
+         * 
+         * @param other 
+         * @return TimeCode 
+         */
         TimeCode operator+(const TimeCode& other) const;
-        // Subtraction operator
+
+        /**
+         * @brief Subtracts one TimeCode from another
+         * 
+         * @param other 
+         * @return TimeCode
+         * @throws invalid_argument if the difference of the TimeCodes would be negative
+         */
         TimeCode operator-(const TimeCode& other) const;
-        // Multiplication operator
+
+        /**
+         * @brief Multiplies a TimeCode by a double
+         * 
+         * @param a 
+         * @return TimeCode 
+         * @throws invalid_argument if a < 0
+         */
         TimeCode operator*(double a) const;
-        // Division operator
+
+        /**
+         * @brief Divides a TimeCode by a double
+         * 
+         * @param a 
+         * @return TimeCode
+         * @throws invalid_argument if a < 0 
+         */
         TimeCode operator/(double a) const;
 
-        // Equals operator
+        /**
+         * @brief Checks if two TimeCodes' values are equal
+         * 
+         * @param other 
+         * @return true 
+         * @return false 
+         */
         bool operator == (const TimeCode& other) const;
-        // Not Equals operator
+
+        /**
+         * @brief Checks if two TimeCodes' values are not equal
+         * 
+         * @param other 
+         * @return true 
+         * @return false 
+         */
         bool operator != (const TimeCode& other) const;
 
-        // Less Than operator
+        /**
+         * @brief Checks that one TimeCode's value is less than the other's
+         * 
+         * @param other 
+         * @return true 
+         * @return false 
+         */
         bool operator < (const TimeCode& other) const;
-        // Less Than or Equal to operator
+
+        /**
+         * @brief Checks that one TimeCode's value is less than or equal to the other's
+         * 
+         * @param other 
+         * @return true 
+         * @return false 
+         */
         bool operator <= (const TimeCode& other) const;
 
-        // Greater Than operator
+        /**
+         * @brief Checks that one TimeCode's value is greater than the other's
+         * 
+         * @param other 
+         * @return true 
+         * @return false 
+         */
         bool operator > (const TimeCode& other) const;
-        // Greater Than or Equal operator
+
+        /**
+         * @brief Checks that one TimeCode's value is greater than or equal to the other's
+         * 
+         * @param other 
+         * @return true 
+         * @return false 
+         */
         bool operator >= (const TimeCode& other) const;
     
     private:
