@@ -19,7 +19,7 @@ void TimeCode::SetHours(unsigned int hours) {
 
 void TimeCode::SetMinutes(unsigned int minutes) {
     if(minutes > 60) {
-        throw invalid_argument("Minutes must be less than 0: " + to_string(minutes));
+        throw invalid_argument("Minutes must be less than 60: " + to_string(minutes));
     }
     unsigned int hr, min, sec;
     GetComponents(hr, min, sec);
@@ -28,7 +28,7 @@ void TimeCode::SetMinutes(unsigned int minutes) {
 
 void TimeCode::SetSeconds(unsigned int seconds) {
     if(seconds > 60) {
-        throw invalid_argument("Seconds must be less than 0: " + to_string(seconds));
+        throw invalid_argument("Seconds must be less than 60: " + to_string(seconds));
     }
     unsigned int hr, min, sec;
     GetComponents(hr, min, sec);
@@ -58,7 +58,7 @@ unsigned int TimeCode::GetSeconds() const {
 }
 
 void TimeCode::GetComponents(unsigned int& hr, unsigned int& min, unsigned int& sec) const {
-    int currT = t;
+    unsigned long long int currT = t;
     
     hr = currT/3600;
     currT%=3600;
@@ -70,13 +70,6 @@ void TimeCode::GetComponents(unsigned int& hr, unsigned int& min, unsigned int& 
 }
 
 long long unsigned int TimeCode::ComponentsToSeconds(unsigned int hr, unsigned int min, unsigned long long int sec) {
-    // if(hr < 0) {
-    //     throw invalid_argument("Negative arguments not allowed: " + to_string(hr));
-    // } else if(min < 0) {
-    //     throw invalid_argument("Negative arguments not allowed: " + to_string(min));
-    // } else if(sec < 0) {
-    //     throw invalid_argument("Negative arguments not allowed: " + to_string(sec));
-    // }
     return hr*3600 + min*60 + sec;
 }
 
@@ -87,28 +80,75 @@ string TimeCode::ToString() const {
 }
 
 TimeCode TimeCode::operator+(const TimeCode& other) const {
-    return TimeCode(t + other.GetTimeCodeAsSeconds());
+    unsigned int hr, min, sec;
+    unsigned long long int newT = t + other.GetTimeCodeAsSeconds();
+
+    hr = newT/3600;
+    newT%=3600;
+
+    min = newT/60;
+    newT%=60;
+
+    sec = newT;
+
+    return TimeCode(hr, min, sec);
 }
 
 TimeCode TimeCode::operator-(const TimeCode& other) const {
     if(other.GetTimeCodeAsSeconds() > t) {
         throw invalid_argument("Difference between TimeCodes cannot be negative: " + ToString() + " - " + other.ToString());
     }
-    return TimeCode(t - other.GetTimeCodeAsSeconds());
+
+    unsigned int hr, min, sec;
+    unsigned long long int newT = t - other.GetTimeCodeAsSeconds();
+
+    hr = newT/3600;
+    newT%=3600;
+
+    min = newT/60;
+    newT%=60;
+
+    sec = newT;
+
+    return TimeCode(hr, min, sec);
 }
 
 TimeCode TimeCode::operator*(double a) const {
     if(a < 0.0) {
         throw invalid_argument("Negative arguments not allowed: " + to_string(a));
     }
-    return TimeCode(int(t * a));
+
+    unsigned int hr, min, sec;
+    unsigned long long int newT = int(t * a);
+
+    hr = newT/3600;
+    newT%=3600;
+
+    min = newT/60;
+    newT%=60;
+
+    sec = newT;
+
+    return TimeCode(hr, min, sec);
 }
 
 TimeCode TimeCode::operator/(double a) const {
     if(a < 0.0) {
         throw invalid_argument("Negative arguments not allowed: " + to_string(a));
     }
-    return TimeCode(int(t / a));
+
+    unsigned int hr, min, sec;
+    unsigned long long int newT = int(t / a);
+
+    hr = newT/3600;
+    newT%=3600;
+
+    min = newT/60;
+    newT%=60;
+
+    sec = newT;
+
+    return TimeCode(hr, min, sec);
 }
 
 bool TimeCode::operator == (const TimeCode& other) const {

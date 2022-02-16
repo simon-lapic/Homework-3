@@ -15,9 +15,6 @@ void TestComponentsToSeconds() {
 	assert(t1 == 11862);
 	cout << " PASSED" << endl;
 	
-	// Negative input
-	
-	
 }
 
 
@@ -25,16 +22,15 @@ void TestDefaultConstructor() {
 	cout << endl << "=====DEFAULT CONSTRUCTOR TESTS=====" << endl;
 	TimeCode tc;
 	
-	//cout << "Testing ToString()" << endl;
-	//cout << "tc: " << tc.ToString() << endl;
+	// Check the default constructor's value
+	cout << "Default values -> " << tc.ToString() << " -> ";
 	assert(tc.ToString() == "0:0:0");
-	
-	cout << "PASSED!" << endl << endl;
+	cout << "PASSED" << endl;
 }
 
 
 void TestComponentConstructor() {
-	cout << "Testing Component Constructor" << endl;
+	cout << endl << "=====COMPONENTS CONSTRUCTOR TESTS=====" << endl;
 	TimeCode tc = TimeCode(0, 0, 0);
 	//cout << "Testing ToString()" << endl;
 	//cout << "tc: " << tc.ToString() << endl;
@@ -54,7 +50,7 @@ void TestComponentConstructor() {
 
 
 void TestGetComponents() {
-	cout << "Testing GetComponents" << endl;
+	cout << endl << "=====GET COMPONENTS TESTS=====" << endl;
 	
 	unsigned int h;
 	unsigned int m;
@@ -72,7 +68,7 @@ void TestGetComponents() {
 
 
 void TestSubtract() {
-	cout << "Testing Subtract" << endl;
+	cout << endl << "=====SUBTRACTION TESTS=====" << endl;
 	TimeCode tc1 = TimeCode(1, 0, 0);
 	TimeCode tc2 = TimeCode(0, 50, 0);
 	TimeCode tc3 = tc1 - tc2;
@@ -97,7 +93,7 @@ void TestSubtract() {
 
 
 void TestSetMinutes() {
-	cout << "Testing SetMinutes" << endl;
+	cout << endl << "=====SET MINUTES TESTS=====" << endl;
 
 	TimeCode tc = TimeCode(8, 5, 9);
 	tc.SetMinutes(15); // test valid change
@@ -121,18 +117,17 @@ void TestSetMinutes() {
 
 // Many More Tests...
 
-	
-int main() {
-	
+
+void RunTests() {
 	TestComponentsToSeconds();
 	TestDefaultConstructor();
 	TestComponentConstructor();
 	TestGetComponents();
 	TestSubtract();
 	TestSetMinutes();
-	
-	// Many othere test functions...
-	
-	cout << "PASSED ALL TESTS!!!" << endl;
+}
+
+int main() {
+	RunTests();
 	return 0;
 }
