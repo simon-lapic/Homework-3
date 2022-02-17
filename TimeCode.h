@@ -90,7 +90,7 @@ class TimeCode {
          * 
          * @param hr unsigned int, the number of hours
          * @param min unsigned int, the number of minutes
-         * @param sec unsigned int, the number of seconds
+         * @param sec unsigned long long int, the number of seconds
          * @return long long unsigned int, the total number of seconds represented by the components
          */
         static long long unsigned int ComponentsToSeconds(unsigned int hr, unsigned int min, unsigned long long int sec);

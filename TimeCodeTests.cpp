@@ -14,6 +14,18 @@ void TestComponentsToSeconds() {
 	cout << "Components 3:17:42 -> " << t1 << " -> ";
 	assert(t1 == 11862);
 	cout << " PASSED" << endl;
+
+	// All components are 0
+	long long unsigned int t2 = TimeCode::ComponentsToSeconds(0, 0, 0);
+	cout << "Components 0:0:0 -> " << t2 << " -> ";
+	assert(t2 == 0);
+	cout << " PASSED" << endl;
+
+	// Rollover test
+	long long unsigned int t3 = TimeCode::ComponentsToSeconds(3, 17, 90);
+	cout << "Components 3:17:90 -> " << t3 << " -> ";
+	assert(t3 == 11910);
+	cout << " PASSED" << endl;
 	
 }
 
@@ -32,20 +44,20 @@ void TestDefaultConstructor() {
 void TestComponentConstructor() {
 	cout << endl << "=====COMPONENTS CONSTRUCTOR TESTS=====" << endl;
 	TimeCode tc = TimeCode(0, 0, 0);
-	//cout << "Testing ToString()" << endl;
-	//cout << "tc: " << tc.ToString() << endl;
+	cout << "(0, 0, 0) -> " << tc.ToString() << " -> ";
 	assert(tc.ToString() == "0:0:0");
+	cout << "PASSED" << endl;
 	
 	// more tests go here!
 	
 	// Roll-over inputs
 	TimeCode tc3 = TimeCode(3, 71, 3801);
-	//cout << "tc3: " << tc3.ToString() << endl;
+	cout << "(3, 71, 3801) -> " << tc3.ToString() << " -> ";
 	assert(tc3.ToString() == "5:14:21");
+	cout << "PASSED" << endl;
 	
 	// More tests go here!
 	
-	cout << "PASSED!" << endl << endl;
 }
 
 
@@ -59,11 +71,12 @@ void TestGetComponents() {
 	// Regular values
 	TimeCode tc = TimeCode(5, 2, 18);
 	tc.GetComponents(h, m, s);
+	cout << "Original components: (0, 0, 0) -> " << "h: " << h << ", m: " << m << ", s: " << s << " -> ";
 	assert(h == 5 && m == 2 && s == 18);
+	cout << "PASSED" << endl;
 	
 	// More tests go here!
 	
-	cout << "PASSED!" << endl << endl;
 }
 
 
