@@ -71,11 +71,16 @@ void TestGetComponents() {
 	// Regular values
 	TimeCode tc = TimeCode(5, 2, 18);
 	tc.GetComponents(h, m, s);
-	cout << "Original components: (0, 0, 0) -> " << "h: " << h << ", m: " << m << ", s: " << s << " -> ";
+	cout << "Regular values: (5, 2, 18) -> " << "h: " << h << ", m: " << m << ", s: " << s << " -> ";
 	assert(h == 5 && m == 2 && s == 18);
 	cout << "PASSED" << endl;
 	
-	// More tests go here!
+	// Rollover test
+	TimeCode tc2 = TimeCode(3, 17, 90);
+	tc2.GetComponents(h, m, s);
+	cout << "Rollover test: (3, 17, 90) -> " << "h: " << h << ", m: " << m << ", s: " << s << " -> ";
+	assert(h == 3 && m == 18 && s == 30);
+	cout << " PASSED" << endl;
 	
 }
 
@@ -95,8 +100,7 @@ void TestSubtract() {
 		assert(false);
 	}
 	catch(const invalid_argument& e){
-		// just leave this empty
-		// and keep doing more tests
+
 	}
 
 	// more tests
