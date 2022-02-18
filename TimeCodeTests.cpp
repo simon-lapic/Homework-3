@@ -64,19 +64,90 @@ void TestCopyConstructor() {
 	cout << "PASSED" << endl;
 }
 
+void TestSetHours() {
+	cout << endl << "=====SET HOURS TESTS=====" << endl;
+
+	// Set to 0
+	TimeCode tc = TimeCode(8, 5, 9);
+	tc.SetHours(0);
+	cout << "8:5:9, hr = 0 -> " << tc.ToString() << " -> ";
+	assert(tc.ToString() == "0:5:9");
+	cout << "PASSED" << endl;
+
+	// Random change
+	TimeCode tc2 = TimeCode(8, 5, 9);
+	tc2.SetHours(15);
+	cout << "8:5:9,  hr = 15 -> " << tc2.ToString() << " -> ";
+	assert(tc2.ToString() == "15:5:9");
+	cout << "PASSED" << endl;	
+}
+
+void TestSetMinutes() {
+	cout << endl << "=====SET MINUTES TESTS=====" << endl;
+
+	// Set to 0
+	TimeCode tc = TimeCode(8, 5, 9);
+	tc.SetMinutes(0);
+	cout << "8:5:9, min = 0 -> " << tc.ToString() << " -> ";
+	assert(tc.ToString() == "8:0:9");
+	cout << "PASSED" << endl;
+
+	// Random change
+	TimeCode tc2 = TimeCode(8, 5, 9);
+	tc2.SetMinutes(15);
+	cout << "8:5:9,  min = 15 -> " << tc2.ToString() << " -> ";
+	assert(tc2.ToString() == "8:15:9");
+	cout << "PASSED" << endl;
+
+	// Invalid argument
+	TimeCode tc3 = TimeCode(8, 5, 9);
+	cout << "8:5:9, min = 80 (invalid_argument) -> ";
+	try {
+		tc3.SetMinutes(80);
+		cout << tc3.ToString() << " -> EXCEPTION NOT THROWN" << endl;
+		assert(false);
+	}
+	catch (const invalid_argument &e) { }
+	cout << tc3.ToString();
+	assert(tc.ToString() == "8:5:9");
+	cout << " -> PASSED" << endl;
+}
+
+void TestSetSeconds() {
+	cout << endl << "=====SET MINUTES TESTS=====" << endl;
+
+	TimeCode tc = TimeCode(8, 5, 9);
+	tc.SetMinutes(15); // test valid change
+	assert(tc.ToString() == "8:15:9");
+
+	try
+	{
+		tc.SetMinutes(80);  // test invalid change
+		assert(false);
+	}
+	catch (const invalid_argument &e)
+	{
+		// cout << e.what() << endl;
+	}
+
+	assert(tc.ToString() == "8:15:9");
+
+	cout << "PASSED!" << endl << endl;
+}
+
 void TestComponentsToSeconds() {
 	cout << endl << "=====COMPONENTS TO SECONDS TESTS=====" << endl;
 	
-	// Random but "safe" inputs
-	long long unsigned int t1 = TimeCode::ComponentsToSeconds(3, 17, 42);
-	cout << "Components 3:17:42 -> " << t1 << " -> ";
-	assert(t1 == 11862);
-	cout << " PASSED" << endl;
-
 	// All components are 0
 	long long unsigned int t2 = TimeCode::ComponentsToSeconds(0, 0, 0);
 	cout << "Components 0:0:0 -> " << t2 << " -> ";
 	assert(t2 == 0);
+	cout << " PASSED" << endl;
+
+	// Random but "safe" inputs
+	long long unsigned int t1 = TimeCode::ComponentsToSeconds(3, 17, 42);
+	cout << "Components 3:17:42 -> " << t1 << " -> ";
+	assert(t1 == 11862);
 	cout << " PASSED" << endl;
 
 	// Rollover test
@@ -135,40 +206,23 @@ void TestSubtract() {
 }
 
 
-void TestSetMinutes() {
-	cout << endl << "=====SET MINUTES TESTS=====" << endl;
-
-	TimeCode tc = TimeCode(8, 5, 9);
-	tc.SetMinutes(15); // test valid change
-	assert(tc.ToString() == "8:15:9");
-
-	try
-	{
-		tc.SetMinutes(80);  // test invalid change
-		assert(false);
-	}
-	catch (const invalid_argument &e)
-	{
-		// cout << e.what() << endl;
-	}
-
-	assert(tc.ToString() == "8:15:9");
-
-	cout << "PASSED!" << endl << endl;
-}
-
-
 // Many More Tests...
 
 
 void RunTests() {
+	// Constructors
 	TestDefaultConstructor();
 	TestComponentConstructor();
 	TestCopyConstructor();
+
+	// Setters
+	TestSetHours();
+	TestSetMinutes();
+	TestSetSeconds();
+
 	TestComponentsToSeconds();
 	TestGetComponents();
 	TestSubtract();
-	TestSetMinutes();
 }
 
 int main() {
