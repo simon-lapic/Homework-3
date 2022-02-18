@@ -5,6 +5,64 @@ using namespace std;
 #include "TimeCode.h"
 #include "TimeCode.cpp"
 
+void TestDefaultConstructor() {
+	cout << endl << "=====DEFAULT CONSTRUCTOR TESTS=====" << endl;
+	TimeCode tc;
+	
+	// Check the default constructor's value
+	cout << "Default values -> " << tc.ToString() << " -> ";
+	assert(tc.ToString() == "0:0:0");
+	cout << "PASSED" << endl;
+}
+
+void TestComponentConstructor() {
+	cout << endl << "=====COMPONENTS CONSTRUCTOR TESTS=====" << endl;
+
+	// All 0s
+	TimeCode tc = TimeCode(0, 0, 0);
+	cout << "(0, 0, 0) -> " << tc.ToString() << " -> ";
+	assert(tc.ToString() == "0:0:0");
+	cout << "PASSED" << endl;
+	
+	// Random Values
+	TimeCode tc2 = TimeCode(3, 17, 42);
+	cout << "(3, 17, 42) -> " << tc2.ToString() << " -> ";
+	assert(tc2.ToString() == "3:17:42");
+	cout << "PASSED" << endl;
+	
+	// Roll-over inputs
+	TimeCode tc3 = TimeCode(3, 71, 3801);
+	cout << "(3, 71, 3801) -> " << tc3.ToString() << " -> ";
+	assert(tc3.ToString() == "5:14:21");
+	cout << "PASSED" << endl;
+	
+	
+}
+
+void TestCopyConstructor() {
+	cout << endl << "=====COPY CONSTRUCTOR TESTS=====" << endl;
+
+	// All 0s in the original TimeCode
+	TimeCode tc = TimeCode(0, 0, 0);
+	TimeCode newTC = TimeCode(tc);
+	cout << "Original 0:0:0 -> " << newTC.ToString() << " -> ";
+	assert(newTC.ToString() == "0:0:0");
+	cout << "PASSED" << endl;
+
+	// All 0s in the original TimeCode
+	TimeCode tc2 = TimeCode(3, 17, 42);
+	TimeCode newTC2 = TimeCode(tc2);
+	cout << "Original 3:17:42 -> " << newTC2.ToString() << " -> ";
+	assert(newTC2.ToString() == "3:17:42");
+	cout << "PASSED" << endl;
+
+	// Roll-over inputs
+	TimeCode tc3 = TimeCode(3, 71, 3801);
+	TimeCode newTC3 = TimeCode(tc3);
+	cout << "Original 3:71:3801 -> " << newTC3.ToString() << " -> ";
+	assert(newTC3.ToString() == "5:14:21");
+	cout << "PASSED" << endl;
+}
 
 void TestComponentsToSeconds() {
 	cout << endl << "=====COMPONENTS TO SECONDS TESTS=====" << endl;
@@ -28,38 +86,6 @@ void TestComponentsToSeconds() {
 	cout << " PASSED" << endl;
 	
 }
-
-
-void TestDefaultConstructor() {
-	cout << endl << "=====DEFAULT CONSTRUCTOR TESTS=====" << endl;
-	TimeCode tc;
-	
-	// Check the default constructor's value
-	cout << "Default values -> " << tc.ToString() << " -> ";
-	assert(tc.ToString() == "0:0:0");
-	cout << "PASSED" << endl;
-}
-
-
-void TestComponentConstructor() {
-	cout << endl << "=====COMPONENTS CONSTRUCTOR TESTS=====" << endl;
-	TimeCode tc = TimeCode(0, 0, 0);
-	cout << "(0, 0, 0) -> " << tc.ToString() << " -> ";
-	assert(tc.ToString() == "0:0:0");
-	cout << "PASSED" << endl;
-	
-	// more tests go here!
-	
-	// Roll-over inputs
-	TimeCode tc3 = TimeCode(3, 71, 3801);
-	cout << "(3, 71, 3801) -> " << tc3.ToString() << " -> ";
-	assert(tc3.ToString() == "5:14:21");
-	cout << "PASSED" << endl;
-	
-	// More tests go here!
-	
-}
-
 
 void TestGetComponents() {
 	cout << endl << "=====GET COMPONENTS TESTS=====" << endl;
@@ -136,9 +162,10 @@ void TestSetMinutes() {
 
 
 void RunTests() {
-	TestComponentsToSeconds();
 	TestDefaultConstructor();
 	TestComponentConstructor();
+	TestCopyConstructor();
+	TestComponentsToSeconds();
 	TestGetComponents();
 	TestSubtract();
 	TestSetMinutes();
