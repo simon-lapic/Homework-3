@@ -109,30 +109,39 @@ void TestSetMinutes() {
 	}
 	catch (const invalid_argument &e) { }
 	cout << tc3.ToString();
-	assert(tc.ToString() == "8:5:9");
+	assert(tc3.ToString() == "8:5:9");
 	cout << " -> PASSED" << endl;
 }
 
 void TestSetSeconds() {
-	cout << endl << "=====SET MINUTES TESTS=====" << endl;
+	cout << endl << "=====SET SECONDS TESTS=====" << endl;
 
+	// Set to 0
 	TimeCode tc = TimeCode(8, 5, 9);
-	tc.SetMinutes(15); // test valid change
-	assert(tc.ToString() == "8:15:9");
+	tc.SetSeconds(0);
+	cout << "8:5:9, sec = 0 -> " << tc.ToString() << " -> ";
+	assert(tc.ToString() == "8:5:0");
+	cout << "PASSED" << endl;
 
-	try
-	{
-		tc.SetMinutes(80);  // test invalid change
+	// Random change
+	TimeCode tc2 = TimeCode(8, 5, 9);
+	tc2.SetSeconds(15);
+	cout << "8:5:9,  sec = 15 -> " << tc2.ToString() << " -> ";
+	assert(tc2.ToString() == "8:5:15");
+	cout << "PASSED" << endl;
+
+	// Invalid argument
+	TimeCode tc3 = TimeCode(8, 5, 9);
+	cout << "8:5:9, sec = 80 (invalid_argument) -> ";
+	try {
+		tc3.SetSeconds(80);
+		cout << tc3.ToString() << " -> EXCEPTION NOT THROWN" << endl;
 		assert(false);
 	}
-	catch (const invalid_argument &e)
-	{
-		// cout << e.what() << endl;
-	}
-
-	assert(tc.ToString() == "8:15:9");
-
-	cout << "PASSED!" << endl << endl;
+	catch (const invalid_argument &e) { }
+	cout << tc3.ToString();
+	assert(tc3.ToString() == "8:5:9");
+	cout << " -> PASSED" << endl;
 }
 
 void TestComponentsToSeconds() {
@@ -158,6 +167,17 @@ void TestComponentsToSeconds() {
 	
 }
 
+void TestReset() {
+	cout << endl << "=====RESET TEST=====" << endl;
+
+	// From random values
+	TimeCode tc = TimeCode(8, 5, 9);
+	tc.reset();
+	cout << "8:5:9 -> " << tc.ToString() << " -> ";
+	assert(tc.ToString() == "0:0:0");
+	cout << "PASSED" << endl;
+}
+
 void TestGetComponents() {
 	cout << endl << "=====GET COMPONENTS TESTS=====" << endl;
 	
@@ -181,6 +201,9 @@ void TestGetComponents() {
 	
 }
 
+void TestAdd() {
+	
+}
 
 void TestSubtract() {
 	cout << endl << "=====SUBTRACTION TESTS=====" << endl;
@@ -206,7 +229,6 @@ void TestSubtract() {
 }
 
 
-// Many More Tests...
 
 
 void RunTests() {
@@ -220,8 +242,14 @@ void RunTests() {
 	TestSetMinutes();
 	TestSetSeconds();
 
-	TestComponentsToSeconds();
+	// Reset
+	TestReset();
+
+	// Core Functions
 	TestGetComponents();
+	TestComponentsToSeconds();
+
+	// Operators
 	TestSubtract();
 }
 
