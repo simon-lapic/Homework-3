@@ -1,5 +1,4 @@
 .vscode
-TimeCodeTests.exe
-TimeCode.exe
+*.exe
 TimeCodeTests
-NASALaunchAnalysis.exe
+TimeCodeTestsSimon

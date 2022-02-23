@@ -1,11 +1,11 @@
 #include <ctime>
 #include <vector>
+#include <string>
 #include <fstream>
 
 using namespace std;
 
 #include "TimeCode.h"
-#include "TimeCode.cpp"
 
 /**
  * @brief Given a string, extracts a valid TimeCode, assuming that the seconds on the time code is 0
@@ -14,7 +14,8 @@ using namespace std;
  * @return TimeCode 
  */
 TimeCode extract_time_code(string str) {
-
+    str.substr(str.find_first_of(':')-2, 2);
+    return TimeCode();
 }
 
 /**
@@ -25,7 +26,13 @@ TimeCode extract_time_code(string str) {
  */
 vector<TimeCode> get_time_codes(string fileName) {
     fstream file(fileName);
+    vector<TimeCode> time_codes;
 
+    string line;
+    while(getline(file, line)) {
+        time_codes.push_back(extract_time_code(line));
+    }
+    return vector<TimeCode>();
 }
 
 int main() {
