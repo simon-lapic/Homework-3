@@ -3,7 +3,6 @@
 using namespace std;
 
 #include "TimeCode.h"
-#include "TimeCode.cpp"
 
 void TestDefaultConstructor() {
 	cout << endl << "=====DEFAULT CONSTRUCTOR TESTS=====" << endl;
