@@ -7,6 +7,7 @@ using namespace std;
 
 #include "TimeCode.h"
 
+
 /**
  * @brief Splits a given string along a given delimiter
  * 
@@ -33,11 +34,15 @@ vector<string> split(string str, char delim) {
  * @return TimeCode 
  */
 TimeCode extract_time_code(string str) {
-    string listed_tc = str.substr(str.find_first_of(':')-2, 4);
-    unsigned int hrs;
-    unsigned int mins;
+    int index = str.find_first_of(':');
+    if(index < str.size()) {
+        unsigned int hrs = stoi(str.substr(index-2, 2));
+        unsigned int mins = stoi(str.substr(index+1, 2));
 
-    return TimeCode(1, 1, 0);
+        return TimeCode(hrs, mins, 0);
+    } else {
+        throw invalid_argument("No TimeCode in str");
+    }
 }
 
 /**
@@ -46,19 +51,19 @@ TimeCode extract_time_code(string str) {
  * @param fileName The name of the NASA csv file
  * @return vector<TimeCode>
  */
-vector<TimeCode> get_time_codes(string fileName) {
+vector<TimeCode> get_time_codes(string fileName, int& count) {
     fstream file(fileName);
     vector<TimeCode> time_codes;
 
     string line;
     getline(file, line);
-    int count = 0;
     while(getline(file, line)) {
         // Get the TimeCode from the 4th column of the csv line
         vector<string> columns = split(line, '\"');
-        cout << "Line " << count << ": " << columns.at(1) << endl;
-        count++;
-        time_codes.push_back(extract_time_code(columns.at(1)));
+        try {
+            time_codes.push_back(extract_time_code(columns.at(1)));
+            count++;
+        } catch(invalid_argument) { }
     }
     return time_codes;
 }
@@ -81,5 +86,8 @@ TimeCode avg_time_codes(vector<TimeCode> time_codes) {
 }
 
 int main() {
-    cout << "Average Launch Time: " << avg_time_codes(get_time_codes("Space_Corrected.csv")).ToString() << endl;
+    int num_data_points = 0;
+    TimeCode avg = avg_time_codes(get_time_codes("Space_Corrected.csv", num_data_points));
+    cout << num_data_points << " data points" << endl;
+    cout << "Average Launch Time: " << avg.ToString() << endl;
 }
