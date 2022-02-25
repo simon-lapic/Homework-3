@@ -23,7 +23,9 @@ struct DryingSnapShot {
  * @return long long int, the number of seconds remaining for this batch
  */
 long long int get_time_remaining(DryingSnapShot dss){
-	return dss.timeToDry->GetTimeCodeAsSeconds();
+	time_t currTime = time(0);
+	long long int elapsed = currTime - dss.startTime;
+	return dss.timeToDry->GetTimeCodeAsSeconds() - elapsed;
 }
 
 /**
@@ -31,7 +33,8 @@ long long int get_time_remaining(DryingSnapShot dss){
  * @return string, a string representation of the DryingSnapShot
  */
 string drying_snap_shot_to_string(DryingSnapShot dss){
-	return "Batch-" + dss.name + " will dry in " + dss.timeToDry->ToString();
+	TimeCode display(0, 0, get_time_remaining(dss))
+	return "Batch-" + dss.name + " will dry in " + display;
 }
 
 /**
@@ -49,26 +52,6 @@ double get_sphere_sa(double r){
  */
 TimeCode *compute_time_code(double surfaceArea){
 	return new TimeCode(0, 0, floor(surfaceArea));
-}
-
-/**
- * @brief Updates the time remaining for a given DryingSnapShot and checks if it has been completed
- * @param dss DryingSnapShot
- * @returns true if the DryingSnapShot is completed, otherwise false
- */
-void check_batch(DryingSnapShot dss) {
-	if (dss.timeToDry != nullptr) {
-		time_t currTime = time(0);
-		long long int elapsed = currTime - dss.startTime;
-		long long int remaining = dss.timeToDry->GetTimeCodeAsSeconds() - elapsed;
-
-		if(remaining > 0) {
-			dss.timeToDry = new TimeCode(0, 0, remaining);
-			cout << drying_snap_shot_to_string(dss) << endl;
-		} else {
-			dss.timeToDry = new TimeCode(0, 0, 0);
-		}
-	} 
 }
 
 
@@ -111,8 +94,8 @@ void add_snapshot(vector<DryingSnapShot> &vec) {
 void view_snapshots(vector<DryingSnapShot> &vec) {
 	cout << "Tracking " << vec.size() << " batch(es)" << endl;
 	for(int i = 0; i<vec.size(); i++) {
-		check_batch(vec.at(i));
-		if(vec.at(i).timeToDry->GetTimeCodeAsSeconds() == 0) {
+		cout << drying_snap_shot_to_string(vec.at(i)) << endl;
+		if(get_time_remaining(vec.at(i)) <= 0) {
 			delete vec.at(i).timeToDry;
 			vec.erase(vec.begin()+i);
 			i--;
