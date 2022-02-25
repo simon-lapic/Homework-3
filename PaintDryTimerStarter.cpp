@@ -22,6 +22,7 @@ struct DryingSnapShot {
 
 
 long long int get_time_remaining(DryingSnapShot dss){
+	// unsigned long long int 
 	return dss.timeToDry->GetTimeCodeAsSeconds();
 }
 
@@ -38,16 +39,41 @@ double get_sphere_sa(double r){
 	return 4*M_PI*pow(r, 2);
 }
 
-/**
- * @brief 
- * 
- * @param surfaceArea 
- * @return TimeCode* 
- */
+
 TimeCode *compute_time_code(double surfaceArea){
 	return new TimeCode(0, 0, floor(surfaceArea));
 }
 
+/**
+ * @brief Prompts the user for an input with a given message
+ * 
+ * @param message string, the message to give the user
+ * @return string, the user's input
+ */
+string get_input(string message) {
+	cout << message;
+	string input;
+	cin >> input;
+	return input;
+}
+
+/**
+ * @brief Handles the user input for the program
+ */
+void handle_input() {
+	while(true){
+		string input = get_input("Choose an option: (A)dd Batch, (V)iew Current Batches, (Q)uit: ");
+		if (input == "a" || input == "A") {
+			cout << "Add." << endl; // test
+		} else if (input == "v" || input == "V") {
+			cout << "View." << endl; // test
+		} else if (input == "q" || input == "Q") {
+			return;
+		} else {
+			cout << "Invalid Input." << endl;
+		}
+	}
+}
 
 void tests(){
 	// get_time_remaining
@@ -62,8 +88,7 @@ void tests(){
 
 	// get_sphere_sa
 	double sa = get_sphere_sa(2.0);
-	cout << sa << endl;
-	assert (50.2654 > sa && sa < 50.2655);
+	assert (50.2654 < sa && sa < 50.2656);
 	// add more tests here
 
 
@@ -81,9 +106,7 @@ void tests(){
 
 }
 
-
 int main(){
-	// replace with your code
-	tests();
+	handle_input();
 	return 0;
 }
