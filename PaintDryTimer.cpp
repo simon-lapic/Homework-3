@@ -56,21 +56,19 @@ TimeCode *compute_time_code(double surfaceArea){
  * @param dss DryingSnapShot
  * @returns true if the DryingSnapShot is completed, otherwise false
  */
-bool check_batch(DryingSnapShot dss) {
-	if (dss.timeToDry == nullptr) {
+void check_batch(DryingSnapShot dss) {
+	// if (dss.timeToDry != nullptr) {
 		time_t currTime = time(0);
-		long long int elapsed = int(currTime - dss.startTime);
+		long long int elapsed = currTime - dss.startTime;
 		long long int remaining = dss.timeToDry->GetTimeCodeAsSeconds() - elapsed;
-		cout << drying_snap_shot_to_string(dss) << endl;
 
-		delete dss.timeToDry;
 		if(remaining > 0) {
 			dss.timeToDry = new TimeCode(0, 0, remaining);
+			cout << drying_snap_shot_to_string(dss) << endl;
+		} else {
+			delete dss.timeToDry;
 		}
-		return false;
-	} else {
-		return true;
-	}
+	// } 
 }
 
 
@@ -96,6 +94,7 @@ string get_input(string message) {
  */
 void add_snapshot(vector<DryingSnapShot> &vec) {
 	DryingSnapShot dss;
+	srand(time(0));
 	dss.startTime = time(0);
 	dss.timeToDry = compute_time_code(get_sphere_sa(stod(get_input("ball radius: "))));
 	dss.name = to_string(rand());
@@ -112,7 +111,8 @@ void add_snapshot(vector<DryingSnapShot> &vec) {
 void view_snapshots(vector<DryingSnapShot> &vec) {
 	cout << "Tracking " << vec.size() << " batch(es)" << endl;
 	for(int i = 0; i<vec.size(); i++) {
-		if(check_batch(vec.at(i))) {
+		check_batch(vec.at(i));
+		if(vec.at(i).timeToDry == nullptr) {
 			vec.erase(vec.begin() + i);
 		}
 	}
