@@ -9,8 +9,6 @@
 
 using namespace std;
 
-
-
 /**
  * @brief 
  */
@@ -20,16 +18,20 @@ struct DryingSnapShot {
 	TimeCode *timeToDry;
 };
 
-
+/**
+ * @param dss DryingSnapShot, the Drying Snapshot to look at
+ * @return long long int, the number of seconds remaining for this batch
+ */
 long long int get_time_remaining(DryingSnapShot dss){
-	// unsigned long long int 
 	return dss.timeToDry->GetTimeCodeAsSeconds();
 }
 
-
+/**
+ * @param dss DryingSnapShot, the Drying Snapshot to look at
+ * @return string, a string representation of the DryingSnapShot
+ */
 string drying_snap_shot_to_string(DryingSnapShot dss){
-
-	return "";
+	return "Batch-" + dss.name + " will dry in " + dss.timeToDry->ToString();
 }
 
 /**
@@ -39,10 +41,40 @@ double get_sphere_sa(double r){
 	return 4*M_PI*pow(r, 2);
 }
 
-
+/**
+ * @brief Computes a TimeCode representation of the time required to dry a sphere with a given surface area
+ * 
+ * @param surfaceArea double, the surface area of the ball
+ * @return TimeCode*, a pointer to the TimeCode representation
+ */
 TimeCode *compute_time_code(double surfaceArea){
 	return new TimeCode(0, 0, floor(surfaceArea));
 }
+
+/**
+ * @brief Updates the time remaining for a given DryingSnapShot and checks if it has been completed
+ * @param dss DryingSnapShot
+ * @returns true if the DryingSnapShot is completed, otherwise false
+ */
+bool check_batch(DryingSnapShot dss) {
+	if (dss.timeToDry == nullptr) {
+		time_t currTime = time(0);
+		long long int elapsed = int(currTime - dss.startTime);
+		long long int remaining = dss.timeToDry->GetTimeCodeAsSeconds() - elapsed;
+		cout << drying_snap_shot_to_string(dss) << endl;
+
+		delete dss.timeToDry;
+		if(remaining > 0) {
+			dss.timeToDry = new TimeCode(0, 0, remaining);
+		}
+		return false;
+	} else {
+		return true;
+	}
+}
+
+
+// UI
 
 /**
  * @brief Prompts the user for an input with a given message
@@ -58,15 +90,46 @@ string get_input(string message) {
 }
 
 /**
+ * @brief Adds a new DryingSnapShot to a given list of DryingSnapShots
+ * 
+ * @param vec vector<DryingSnapShot>, the list of snapshots
+ */
+void add_snapshot(vector<DryingSnapShot> &vec) {
+	DryingSnapShot dss;
+	dss.startTime = time(0);
+	dss.timeToDry = compute_time_code(get_sphere_sa(stod(get_input("ball radius: "))));
+	dss.name = to_string(rand());
+
+	vec.push_back(dss);
+	cout << drying_snap_shot_to_string(dss) << endl;
+}
+
+/**
+ * @brief Prints a view of all the batches currently being tracked, and updates them
+ * 
+ * @param vec vector<DryingSnapShot>, the list of 
+ */
+void view_snapshots(vector<DryingSnapShot> &vec) {
+	cout << "Tracking " << vec.size() << " batch(es)" << endl;
+	for(int i = 0; i<vec.size(); i++) {
+		if(check_batch(vec.at(i))) {
+			vec.erase(vec.begin() + i);
+		}
+	}
+}
+
+/**
  * @brief Handles the user input for the program
  */
 void handle_input() {
+	vector<DryingSnapShot> snapshots;
+
 	while(true){
 		string input = get_input("Choose an option: (A)dd Batch, (V)iew Current Batches, (Q)uit: ");
 		if (input == "a" || input == "A") {
-			cout << "Add." << endl; // test
+			add_snapshot(snapshots);
 		} else if (input == "v" || input == "V") {
-			cout << "View." << endl; // test
+			view_snapshots(snapshots);
 		} else if (input == "q" || input == "Q") {
 			return;
 		} else {
