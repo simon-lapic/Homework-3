@@ -57,7 +57,7 @@ TimeCode *compute_time_code(double surfaceArea){
  * @returns true if the DryingSnapShot is completed, otherwise false
  */
 void check_batch(DryingSnapShot dss) {
-	// if (dss.timeToDry != nullptr) {
+	if (dss.timeToDry != nullptr) {
 		time_t currTime = time(0);
 		long long int elapsed = currTime - dss.startTime;
 		long long int remaining = dss.timeToDry->GetTimeCodeAsSeconds() - elapsed;
@@ -66,9 +66,9 @@ void check_batch(DryingSnapShot dss) {
 			dss.timeToDry = new TimeCode(0, 0, remaining);
 			cout << drying_snap_shot_to_string(dss) << endl;
 		} else {
-			delete dss.timeToDry;
+			dss.timeToDry = new TimeCode(0, 0, 0);
 		}
-	// } 
+	} 
 }
 
 
@@ -112,8 +112,10 @@ void view_snapshots(vector<DryingSnapShot> &vec) {
 	cout << "Tracking " << vec.size() << " batch(es)" << endl;
 	for(int i = 0; i<vec.size(); i++) {
 		check_batch(vec.at(i));
-		if(vec.at(i).timeToDry == nullptr) {
-			vec.erase(vec.begin() + i);
+		if(vec.at(i).timeToDry->GetTimeCodeAsSeconds() == 0) {
+			delete vec.at(i).timeToDry;
+			vec.erase(vec.begin()+i);
+			i--;
 		}
 	}
 }
@@ -131,6 +133,11 @@ void handle_input() {
 		} else if (input == "v" || input == "V") {
 			view_snapshots(snapshots);
 		} else if (input == "q" || input == "Q") {
+			for(int i = 0; i<snapshots.size(); i++) {
+				delete snapshots.at(i).timeToDry;
+				snapshots.erase(snapshots.begin()+i);
+				i--;
+			}
 			return;
 		} else {
 			cout << "Invalid Input." << endl;

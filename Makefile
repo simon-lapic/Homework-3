@@ -3,15 +3,3 @@ all:
 	g++ -Wall TimeCode.cpp NASALaunchAnalysis.cpp -o nasa
 	g++ -Wall TimeCode.cpp PaintDryTimer.cpp -o pdt
 
-tc:
-	./time-code
-
-nasa:
-	./nasa
-
-pdt:
-	./pdt
-
-run: tc nasa pdt
-
-try: all run
